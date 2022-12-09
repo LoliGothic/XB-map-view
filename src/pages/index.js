@@ -34,10 +34,12 @@ export default function Home() {
         email: signupEmail.current.value
       })
       .then((res) => {
-        console.log(res);
+        alert("正常に登録されました");
+        return false
       })
       .catch((err) => {
         alert(err.response.data);
+        return false
       })
 
     name.current.value = "";
@@ -53,10 +55,12 @@ export default function Home() {
         Email: loginEmail.current.value
       })
       .then((res) => {
-        router.push({pathname: "/Map", query: res.data}, "/Map")
+        router.push({pathname: "/Map", query: res.data}, "/Map");
+        return false
       })
       .catch((err) => {
         alert(err.response.data);
+        return false
       })
   }
   
@@ -64,11 +68,11 @@ export default function Home() {
     <div className={styles.body}>
       <div className={styles.loginPage}>
         <div className={styles.form}>
-          <form className={styles.registerForm}>
+          <form className={styles.registerForm} onSubmit={postNewaccountData}>
             <input type="text" placeholder="username" ref={name} required />
             <input type="password" placeholder="password" ref={signupPassword} required />
             <input type="email" placeholder="email address" ref={signupEmail} required />
-            <button type="button" onClick={postNewaccountData}>create</button>
+            <button>create</button>
             <p className={styles.message}>
               Already registered?{" "}
               <Link href="#" onClick={switching}>
@@ -76,10 +80,10 @@ export default function Home() {
               </Link>
             </p>
           </form>
-          <form className={styles.loginForm}>
+          <form className={styles.loginForm} onSubmit={postAccountData}>
             <input type="password" placeholder="password" ref={loginPassword} required />
             <input type="email" placeholder="email address" ref={loginEmail} required />
-            <button type="button" onClick={postAccountData}>login</button>
+            <button>login</button>
             <p className={styles.message}>
               Not registered?{" "}
               <Link href="#" onClick={switching}>
