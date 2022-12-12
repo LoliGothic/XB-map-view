@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.body{
+.body {
   width: 100vw;
   height: 100vh;
   background: rgb(255,192,203,0.3);
@@ -8,7 +8,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;  
 }
-.loginPage {
+.login-page {
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
@@ -60,6 +60,6 @@
   color: #25b7c0;
   text-decoration: none;
 }
-.form .registerForm {
+.form .register-form {
   display: none;
 }

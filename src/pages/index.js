@@ -66,11 +66,11 @@ export default function Home() {
   
   return (
     <div className={styles.body}>
-      <div className={styles.loginPage}>
+      <div className={styles["login-page"]}>
         <div className={styles.form}>
-          <form className={styles.registerForm} onSubmit={postNewaccountData}>
+          <form className={styles["register-form"]} onSubmit={postNewaccountData}>
             <input type="text" placeholder="username" ref={name} required />
-            <input type="password" placeholder="password" ref={signupPassword} required />
+            <input type="password" placeholder="password" ref={signupPassword} minLength="6" required />
             <input type="email" placeholder="email address" ref={signupEmail} required />
             <button>create</button>
             <p className={styles.message}>
@@ -80,7 +80,7 @@ export default function Home() {
               </Link>
             </p>
           </form>
-          <form className={styles.loginForm} onSubmit={postAccountData}>
+          <form onSubmit={postAccountData}>
             <input type="password" placeholder="password" ref={loginPassword} required />
             <input type="email" placeholder="email address" ref={loginEmail} required />
             <button>login</button>
