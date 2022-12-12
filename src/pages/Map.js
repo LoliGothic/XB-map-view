@@ -7,7 +7,6 @@ import styles from "../styles/Map.module.css";
 export default function Map() {
   const [allShopInfo, setAllShopInfo] = useState([]);
   const [center, setCenter] = useState({lat: 35.69575, lng: 139.77521});
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios
@@ -25,14 +24,11 @@ export default function Map() {
       })
   },[])
   const router = useRouter();
+
+  // 地図の大きさ指定
   const containerStyle = {
     height: "100vh",
     width: "100%",
-  };
-
-  const divStyle = {
-    background: "white",
-    fontSize: 7.5,
   };
 
   const [size, setSize] = useState(undefined);
@@ -46,14 +42,18 @@ export default function Map() {
 
   function showInfoWindow(shopId) {
     allShopInfo.forEach((shopInfo) => {
-      if (shopInfo.id === shopId) {
+      // クリックしたマーカー以外のvisibleをfalseにして，非表示にする
+      if (shopInfo.visible === true) {
+        shopInfo.visible = false;
+      }
+      // クリックしたマーカーのvisibleをtrueにして，表示する
+      else if (shopInfo.id === shopId) {
         shopInfo.visible = true;
         setCenter({lat: shopInfo.lat, lng: shopInfo.lng})
-        setShow(!show)
       }
     })
   }
-  
+
   function closeInfoWindow(shopId) {
     allShopInfo.forEach((shopInfo) => {
       if (shopInfo.id === shopId) {
@@ -63,9 +63,19 @@ export default function Map() {
     })
   }
 
+  // マーカー以外の地図をおしたら，すべてvisibleをfalseにし，非表示にする
+  function resetVisible() {
+    const allShop = [];
+    setAllShopInfo(allShopInfo.forEach((shopInfo) => {
+      allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
+    }))
+
+    setAllShopInfo(allShop)
+  }
+
   return (
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17}> 
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17} onClick={resetVisible}> 
       {allShopInfo.map((shopInfo, index) => {
         if (shopInfo.visible == false) {
           return (
@@ -79,8 +89,8 @@ export default function Map() {
             <div key={index}>
               <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
               <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
-                <div style={divStyle}>
-                  <h1>秋葉原オフィス</h1>
+                <div className={styles["info-window"]}>
+                  <h1>{shopInfo.name}</h1>
                 </div>
               </InfoWindowF>
             </div>
