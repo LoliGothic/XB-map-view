@@ -1,4 +1,54 @@
 .info-window {
-  background: "white";
-  font-size: 7.5px;
-};
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+.shop-name {
+  color: #111111;
+  font-size: 14px;
+  margin: 0 0 0 0;
+}
+.shop-adress {
+  color: #333333;
+  font-size: 12px;
+  margin: 5px 0 10px 0;
+}
+.scr {
+  height: 215px;
+  overflow: auto;
+}
+.review {
+  position: relative;
+  height: 40px;
+  border-right: solid 1px #4d5156;
+  border-bottom: solid 1px #4d5156;
+  border-left: solid 1px #4d5156;
+  overflow-wrap:  break-word;
+}
+.user-name {
+  position: absolute; 
+  top: -25px;
+}
+.review-time {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+}
+.moji {
+  color: #4d5156;
+}
+.input {
+  background-color: #f2f2f2;
+  width: 88%;
+  position: absolute;
+  bottom: 0;
+  border-radius: 5px;
+  height: 25px;
+}
+.post {
+  position: absolute;
+  right: 0px;
+  bottom: 0;
+  border-radius: 5px;
+  height: 25px;
+}

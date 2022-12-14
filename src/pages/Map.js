@@ -41,26 +41,35 @@ export default function Map() {
   };
 
   function showInfoWindow(shopId) {
+    const allShop = [];
     allShopInfo.forEach((shopInfo) => {
-      // クリックしたマーカー以外のvisibleをfalseにして，非表示にする
-      if (shopInfo.visible === true) {
-        shopInfo.visible = false;
-      }
       // クリックしたマーカーのvisibleをtrueにして，表示する
-      else if (shopInfo.id === shopId) {
-        shopInfo.visible = true;
+      if (shopInfo.id === shopId) {
+        allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: true});
         setCenter({lat: shopInfo.lat, lng: shopInfo.lng})
       }
+      // クリックしたマーカー以外のvisibleをfalseにして，非表示にする
+      else {
+        allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
+      }
     })
+
+    setAllShopInfo(allShop)
   }
 
   function closeInfoWindow(shopId) {
+    const allShop = [];
     allShopInfo.forEach((shopInfo) => {
       if (shopInfo.id === shopId) {
-        shopInfo.visible = false;
+        allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
         setCenter({lat: shopInfo.lat, lng: shopInfo.lng})
       }
+      else {
+        allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
+      }
     })
+
+    setAllShopInfo(allShop);
   }
 
   // マーカー以外の地図をおしたら，すべてvisibleをfalseにし，非表示にする
@@ -90,7 +99,39 @@ export default function Map() {
               <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
               <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
                 <div className={styles["info-window"]}>
-                  <h1>{shopInfo.name}</h1>
+                  <h1 className={styles["shop-name"]}>{shopInfo.name}</h1>
+                  <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
+                  <div className={styles.scr}>
+                    <div className={styles.review}>
+                      <p className={styles["user-name"]}>るてん</p>
+                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles.moji}>椅子アリ！二台あり！ディスペンサー二つとも超2弾が入っている！</p>
+                    </div>
+                    <div className={styles.review}>
+                      <p className={styles["user-name"]}>ぽこピー</p>
+                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
+                    </div>
+                    <div className={styles.review}>
+                      <p className={styles["user-name"]}>ぽこピー</p>
+                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
+                    </div>
+                    <div className={styles.review}>
+                      <p className={styles["user-name"]}>ぽこピー</p>
+                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
+                    </div>
+                    <div className={styles.review}>
+                      <p className={styles["user-name"]}>ぽこピー</p>
+                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles.moji}>獣王痛恨撃</p>
+                    </div>
+                  </div>
+                  <div>
+                    <input type="text" className={styles["input"]} />
+                    <button className={styles["post"]}>投稿</button>
+                  </div>
                 </div>
               </InfoWindowF>
             </div>
