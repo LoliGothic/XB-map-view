@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { GoogleMap, LoadScript, MarkerF, InfoWindowF} from "@react-google-maps/api";
 import axios from "axios";
@@ -7,6 +7,7 @@ import styles from "../styles/Map.module.css";
 export default function Map() {
   const [allShopInfo, setAllShopInfo] = useState([]);
   const [center, setCenter] = useState({lat: 35.69575, lng: 139.77521});
+  const explanation = useRef(null)
 
   useEffect(() => {
     axios
@@ -55,6 +56,15 @@ export default function Map() {
     })
 
     setAllShopInfo(allShop)
+
+    axios
+      .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + `review/${shopId}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   function closeInfoWindow(shopId) {
@@ -82,6 +92,25 @@ export default function Map() {
     setAllShopInfo(allShop)
   }
 
+  function postReview(shopId) {
+    axios
+      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
+        userId: 10,
+        shopId: shopId,
+        explanation: explanation.current.value
+      })
+      .then((res) => {
+        console.log(res);
+        return false;
+      })
+      .catch((err) => {
+        console.log(err);
+        return false;
+      })
+    
+    explanation.current.value = "";
+  }
+
   return (
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17} onClick={resetVisible}> 
@@ -104,13 +133,8 @@ export default function Map() {
                   <div className={styles.scr}>
                     <div className={styles.review}>
                       <p className={styles["user-name"]}>るてん</p>
-                      <p className={styles["review-time"]}>11時30分</p>
+                      <p className={styles["review-time"]}>2022年12月17日</p>
                       <p className={styles.moji}>椅子アリ！二台あり！ディスペンサー二つとも超2弾が入っている！</p>
-                    </div>
-                    <div className={styles.review}>
-                      <p className={styles["user-name"]}>ぽこピー</p>
-                      <p className={styles["review-time"]}>11時30分</p>
-                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
                     </div>
                     <div className={styles.review}>
                       <p className={styles["user-name"]}>ぽこピー</p>
@@ -128,10 +152,10 @@ export default function Map() {
                       <p className={styles.moji}>獣王痛恨撃</p>
                     </div>
                   </div>
-                  <div>
-                    <input type="text" className={styles["input"]} />
-                    <button className={styles["post"]}>投稿</button>
-                  </div>
+                  <form>
+                    <input type="text" className={styles["input"]} ref={explanation} required />
+                    <button type="button" className={styles["post"]} onClick={postReview.bind(this, shopInfo.id)}>投稿</button>
+                  </form>
                 </div>
               </InfoWindowF>
             </div>
