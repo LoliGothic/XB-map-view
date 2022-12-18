@@ -1,15 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import { GoogleMap, LoadScript, MarkerF, InfoWindowF} from "@react-google-maps/api";
 import axios from "axios";
 import styles from "../styles/Map.module.css";
 
 export default function Map() {
   const [allShopInfo, setAllShopInfo] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [center, setCenter] = useState({lat: 35.69575, lng: 139.77521});
   const explanation = useRef(null)
+  const router = useRouter();
+
+  function checkLoginStatus() {
+    // localStoragenにuuidがないならログイン画面に遷移
+    const uuid = localStorage.getItem("uuid")
+    if (uuid == null) {
+      router.push({pathname: "/"})
+      return
+    }
+  }
 
   useEffect(() => {
+    // ログインしているかチェック
+    checkLoginStatus();
+
     axios
       .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + "shop")
       .then((res) => {
@@ -24,7 +38,6 @@ export default function Map() {
         console.log(err);
       })
   },[])
-  const router = useRouter();
 
   // 地図の大きさ指定
   const containerStyle = {
@@ -60,7 +73,12 @@ export default function Map() {
     axios
       .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + `review/${shopId}`)
       .then((res) => {
-        console.log(res);
+        // 全ての口コミを取得してきてreviewsに格納
+        const tmpReviews = [];
+        res.data.forEach((review) => {
+          tmpReviews.push({shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, uuid: review.Uuid, name: review.Name});
+        })
+        setReviews(tmpReviews);
       })
       .catch((err) => {
         console.log(err);
@@ -85,30 +103,61 @@ export default function Map() {
   // マーカー以外の地図をおしたら，すべてvisibleをfalseにし，非表示にする
   function resetVisible() {
     const allShop = [];
-    setAllShopInfo(allShopInfo.forEach((shopInfo) => {
+    allShopInfo.forEach((shopInfo) => {
       allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
-    }))
+    })
 
     setAllShopInfo(allShop)
   }
 
-  function postReview(shopId) {
+  function postReview(shopId, e) {
+    // ページがリロードする処理を無効化する
+    e.preventDefault();
+
+    // ログインしているかチェック
+    checkLoginStatus();
+
+    // localStorageをいじられてる可能性があるので，一度仮のuuidでuserのデータを取得する
+    const tentativeUuid = localStorage.getItem("uuid");
+    let realUuid;
+    let realId;
+
+    // 本当にlocalStorageに書かれてあるuuidが存在するか確認
     axios
-      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
-        userId: 10,
-        shopId: shopId,
-        explanation: explanation.current.value
-      })
+      .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + `user/${tentativeUuid}`)
       .then((res) => {
-        console.log(res);
-        return false;
+        // dbに登録されているuuidとid
+        realUuid = res.data.Uuid;
+        realId = res.data.Id;
+        
+        // 仮のuuidがdbのuuidと一致すれば口コミを投稿する
+        if (realUuid === tentativeUuid) {
+          axios
+            .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
+              userId: realId,
+              shopId: shopId,
+              explanation: explanation.current.value
+            })
+            .then((res) => {
+              // 全ての口コミを取得してきてreviewsに格納
+              const tmpReviews = [];
+              res.data.forEach((review) => {
+                tmpReviews.push({shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, uuid: review.Uuid, name: review.Name});
+              })
+              setReviews(tmpReviews);
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        }
       })
       .catch((err) => {
         console.log(err);
-        return false;
+      })
+      .finally(() => {
+        explanation.current.value = "";
       })
     
-    explanation.current.value = "";
   }
 
   return (
@@ -131,30 +180,19 @@ export default function Map() {
                   <h1 className={styles["shop-name"]}>{shopInfo.name}</h1>
                   <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
                   <div className={styles.scr}>
-                    <div className={styles.review}>
-                      <p className={styles["user-name"]}>るてん</p>
-                      <p className={styles["review-time"]}>2022年12月17日</p>
-                      <p className={styles.moji}>椅子アリ！二台あり！ディスペンサー二つとも超2弾が入っている！</p>
-                    </div>
-                    <div className={styles.review}>
-                      <p className={styles["user-name"]}>ぽこピー</p>
-                      <p className={styles["review-time"]}>11時30分</p>
-                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
-                    </div>
-                    <div className={styles.review}>
-                      <p className={styles["user-name"]}>ぽこピー</p>
-                      <p className={styles["review-time"]}>11時30分</p>
-                      <p className={styles.moji}>獣王痛恨撃あああああああああああああああああああああああああああああああああ</p>
-                    </div>
-                    <div className={styles.review}>
-                      <p className={styles["user-name"]}>ぽこピー</p>
-                      <p className={styles["review-time"]}>11時30分</p>
-                      <p className={styles.moji}>獣王痛恨撃</p>
-                    </div>
-                  </div>
-                  <form>
+                    {reviews.map((review, index) => {
+                      return (
+                        <div key={index} className={styles.review}>
+                          <p className={styles["user-name"]}>{review.name}</p>
+                          <p className={styles["review-time"]}>{review.createdAt}</p>
+                          <p className={styles.moji}>{review.explanation}</p>
+                        </div>
+                      )
+                    })}
+                   </div>
+                  <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
                     <input type="text" className={styles["input"]} ref={explanation} required />
-                    <button type="button" className={styles["post"]} onClick={postReview.bind(this, shopInfo.id)}>投稿</button>
+                    <button className={styles["post"]}>投稿</button>
                   </form>
                 </div>
               </InfoWindowF>
