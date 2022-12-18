@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef} from "react";
 import { useRouter } from 'next/router'
 import Link from "next/link";
 import $ from "jquery";
@@ -13,6 +13,11 @@ export default function Home() {
   const loginPassword = useRef(null);
   const loginEmail = useRef(null);
 
+  // ログイン画面に遷移した時はlocalStorageをすべて削除する
+  useEffect(() => {
+    localStorage.clear();
+  },[])
+
   function switching() {
     // signupとlogin画面を切り替え
     $("form").animate({ height: "toggle", opacity: "toggle" }, "slow");
@@ -25,7 +30,10 @@ export default function Home() {
     loginEmail.current.value = "";
   };
 
-  function postNewaccountData() {
+  function postNewaccountData(e) {
+    // ページがリロードする処理を無効化する
+    e.preventDefault();
+
     // json形式でバックエンドにname,password,emailをpostする
     axios
       .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "signup", {
@@ -35,19 +43,21 @@ export default function Home() {
       })
       .then((res) => {
         alert("正常に登録されました");
-        return false
       })
       .catch((err) => {
         alert(err.response.data);
-        return false
       })
-
-    name.current.value = "";
-    signupPassword.current.value = "";
-    signupEmail.current.value = "";
+      .finally(() => {
+        name.current.value = "";
+        signupPassword.current.value = "";
+        signupEmail.current.value = "";
+      })
   }
 
-  function postAccountData() {
+  function postAccountData(e) {
+    // ページがリロードする処理を無効化する
+    e.preventDefault();
+
     // json形式でバックエンドにpassword,emailをpostする
     axios
       .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "login", {
@@ -55,20 +65,25 @@ export default function Home() {
         Email: loginEmail.current.value
       })
       .then((res) => {
-        router.push({pathname: "/Map", query: res.data}, "/Map");
-        return false
+        router.push({pathname: "/Map"});
+        
+        // localStorageにuuidを保存
+        localStorage.setItem("uuid", res.data.Uuid)
       })
       .catch((err) => {
         alert(err.response.data);
-        return false
       })
-  }
+      .finally(() => {
+        loginPassword.current.value = "";
+        loginEmail.current.value = "";
+       })
+  } 
   
   return (
     <div className={styles.body}>
       <div className={styles["login-page"]}>
         <div className={styles.form}>
-          <form className={styles["register-form"]} onSubmit={postNewaccountData}>
+          <form method="post" className={styles["register-form"]} onSubmit={postNewaccountData}>
             <input type="text" placeholder="username" ref={name} required />
             <input type="password" placeholder="password" ref={signupPassword} minLength="6" required />
             <input type="email" placeholder="email address" ref={signupEmail} required />
@@ -80,7 +95,7 @@ export default function Home() {
               </Link>
             </p>
           </form>
-          <form onSubmit={postAccountData}>
+          <form method="post" onSubmit={postAccountData}>
             <input type="password" placeholder="password" ref={loginPassword} required />
             <input type="email" placeholder="email address" ref={loginEmail} required />
             <button>login</button>
