@@ -23,6 +23,7 @@
 .review {
   position: relative;
   height: auto;
+  width: 300px;
   border-right: solid 1px #4d5156;
   border-bottom: solid 1px #4d5156;
   border-left: solid 1px #4d5156;
