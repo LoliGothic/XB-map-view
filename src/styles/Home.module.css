@@ -10,7 +10,7 @@
 }
 .login-page {
   width: 360px;
-  padding: 250px 0 0 0; /*ログイン画面の上側の余白を決めている*/
+  padding: 8% 0 0 0; /*ログイン画面の上側の余白を決めている*/
   margin: auto;
 }
 .form {
