@@ -165,6 +165,9 @@ export default function Map() {
 
   function deleteReview(id, shopId) {
     if (window.confirm("投稿を削除しますか？")) {
+      // ログインしているかチェック
+      checkLoginStatus();
+      
       axios
         .delete(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
           data: {
