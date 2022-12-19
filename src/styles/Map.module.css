@@ -24,22 +24,51 @@
   position: relative;
   height: auto;
   width: 300px;
-  border-right: solid 1px #4d5156;
-  border-bottom: solid 1px #4d5156;
-  border-left: solid 1px #4d5156;
+  border-right: solid 1px #333333;
+  border-bottom: solid 1px #333333;
+  border-left: solid 1px #333333;
   overflow-wrap: break-word;
 }
 .user-name {
   position: absolute; 
   top: -25px;
+  font-weight: bold;
+  color: #333333;
+  width: 200px;
+  overflow: hidden; /* オーバーした要素を非表示にする*/
+  white-space: nowrap; /* 改行を半角スペースに変換することで、1行にする */
+  text-overflow: ellipsis; /* オーバーしたテキストを３点リーダーにする */
 }
 .review-time {
   position: absolute;
   top: -25px;
+  right: 1.5em;
+  color: #333333;
+}
+.batsu {
+  position: absolute;
+  top: -25px;
   right: 0px;
+  font-size: 100%;/*ボタンの大きさ*/
+  font-weight: bold;
+  border: 1px solid #333333;
+  color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  width: 1.3em;
+  line-height: 1.3em;
+  cursor: pointer;
+  transition: .2s;
+}
+.batsu:hover{
+  background: #333333;
+  border-color: #333333;
+  color: #FFFFFF;
 }
 .moji {
-  color: #4d5156;
+  color: #333333;
   margin: 15px 0 0 0;
 }
 .input {
