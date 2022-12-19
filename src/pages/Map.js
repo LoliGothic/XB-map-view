@@ -5,18 +5,52 @@ import axios from "axios";
 import styles from "../styles/Map.module.css";
 
 export default function Map() {
+  const [size, setSize] = useState(undefined);
+  const [loginUserData, setLoginUserData] = useState([])
   const [allShopInfo, setAllShopInfo] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [center, setCenter] = useState({lat: 35.69575, lng: 139.77521});
   const explanation = useRef(null)
   const router = useRouter();
 
+  // googlemapの設定
+  const containerStyle = {
+    height: "100vh",
+    width: "100%",
+  };
+  const infoWindowOptions = {
+    pixelOffset: size,
+  };
+  const createOffsetSize = () => {
+    return setSize(new window.google.maps.Size(0, -45));
+  };
+
   function checkLoginStatus() {
-    // localStoragenにuuidがないならログイン画面に遷移
-    const uuid = localStorage.getItem("uuid")
-    if (uuid == null) {
-      router.push({pathname: "/"})
-      return
+    // passwordとemailをlocalStorageから取得する
+    const password = localStorage.getItem("session");
+    const email = localStorage.getItem("identity");
+
+    // 二つとも存在すれば，dbの値を一致するか確認
+    if (password != null && email != null) {
+      axios
+        .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "check", {
+          password: password,
+          email: email
+        })
+        .then((res) => {
+          console.log(res.data);
+          setLoginUserData(res.data);
+        })
+        // 一致しなければログイン画面に遷移
+        .catch((err) => {
+          router.push({pathname: "/"});
+          return;
+        })
+    }
+    // どちらかがlocalStorageに存在しなければログイン画面に遷移
+    else {
+      router.push({pathname: "/"});
+          return;
     }
   }
 
@@ -38,21 +72,6 @@ export default function Map() {
         console.log(err);
       })
   },[])
-
-  // 地図の大きさ指定
-  const containerStyle = {
-    height: "100vh",
-    width: "100%",
-  };
-
-  const [size, setSize] = useState(undefined);
-  const infoWindowOptions = {
-    pixelOffset: size,
-  };
-
-  const createOffsetSize = () => {
-    return setSize(new window.google.maps.Size(0, -45));
-  };
 
   function showInfoWindow(shopId) {
     const allShop = [];
@@ -76,8 +95,9 @@ export default function Map() {
         // 全ての口コミを取得してきてreviewsに格納
         const tmpReviews = [];
         res.data.forEach((review) => {
-          tmpReviews.push({shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, uuid: review.Uuid, name: review.Name});
+          tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
         })
+        console.log(tmpReviews);
         setReviews(tmpReviews);
       })
       .catch((err) => {
@@ -117,89 +137,98 @@ export default function Map() {
     // ログインしているかチェック
     checkLoginStatus();
 
-    // localStorageをいじられてる可能性があるので，一度仮のuuidでuserのデータを取得する
-    const tentativeUuid = localStorage.getItem("uuid");
-    let realUuid;
-    let realId;
-
-    // 本当にlocalStorageに書かれてあるuuidが存在するか確認
-    axios
-      .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + `user/${tentativeUuid}`)
-      .then((res) => {
-        // dbに登録されているuuidとid
-        realUuid = res.data.Uuid;
-        realId = res.data.Id;
-        
-        // 仮のuuidがdbのuuidと一致すれば口コミを投稿する
-        if (realUuid === tentativeUuid) {
-          axios
-            .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
-              userId: realId,
-              shopId: shopId,
-              explanation: explanation.current.value
-            })
-            .then((res) => {
-              // 全ての口コミを取得してきてreviewsに格納
-              const tmpReviews = [];
-              res.data.forEach((review) => {
-                tmpReviews.push({shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, uuid: review.Uuid, name: review.Name});
-              })
-              setReviews(tmpReviews);
-            })
-            .catch((err) => {
-              console.log(err);
-            })
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        explanation.current.value = "";
-      })
+    // stateのloginUserDataが存在すれば口コミを投稿する
+    if (loginUserData != null) {
+      axios
+        .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
+          userId: loginUserData.Id,
+          shopId: shopId,
+          explanation: explanation.current.value
+        })
+        .then((res) => {
+          // 全ての口コミを取得してきてreviewsに格納
+          const tmpReviews = [];
+          res.data.forEach((review) => {
+            tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
+          })
+          setReviews(tmpReviews);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          explanation.current.value = "";
+        })
+      }
     
+  }
+
+  function deleteReview(id, shopId) {
+    if (window.confirm("投稿を削除しますか？")) {
+      axios
+        .delete(process.env.NEXT_PUBLIC_BACKEND_API_URL + "review", {
+          data: {
+            id: id,
+            shopId: shopId
+          }
+        })
+        .then((res) => {
+          // 全ての口コミを取得してきてreviewsに格納
+          const tmpReviews = [];
+          res.data.forEach((review) => {
+            tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
+          })
+          setReviews(tmpReviews);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
   }
 
   return (
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17} onClick={resetVisible}> 
-      {allShopInfo.map((shopInfo, index) => {
-        if (shopInfo.visible == false) {
-          return (
-            <div key={index}>
-              <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={showInfoWindow.bind(this, shopInfo.id)} />
-            </div>
-          )
-        }
-        else {
-          return (
-            <div key={index}>
-              <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
-              <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
-                <div className={styles["info-window"]}>
-                  <h1 className={styles["shop-name"]}>{shopInfo.name}</h1>
-                  <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
-                  <div className={styles.scr}>
-                    {reviews.map((review, index) => {
-                      return (
-                        <div key={index} className={styles.review}>
-                          <p className={styles["user-name"]}>{review.name}</p>
-                          <p className={styles["review-time"]}>{review.createdAt}</p>
-                          <p className={styles.moji}>{review.explanation}</p>
-                        </div>
-                      )
-                    })}
-                   </div>
-                  <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
-                    <input type="text" className={styles["input"]} ref={explanation} required />
-                    <button className={styles["post"]}>投稿</button>
-                  </form>
-                </div>
-              </InfoWindowF>
-            </div>
-          )
-        }
-      })}
+        {allShopInfo && allShopInfo.map((shopInfo, index) => {
+          if (shopInfo.visible == false) {
+            return (
+              <div key={index}>
+                <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={showInfoWindow.bind(this, shopInfo.id)} />
+              </div>
+            )
+          }
+          else {
+            return (
+              <div key={index}>
+                <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
+                <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
+                  <div className={styles["info-window"]}>
+                    <h1 className={styles["shop-name"]}>{shopInfo.name}</h1>
+                    <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
+                    <div className={styles.scr}>
+                      {reviews && reviews.map((review, index) => {
+                          return (
+                            <div key={index} className={styles.review}>
+                              <p className={styles["user-name"]}>{review.name}</p>
+                              <p className={styles["review-time"]}>{review.createdAt}</p>
+                              {review.email == loginUserData.Email && review.password == loginUserData.Password &&
+                                <p className={styles.batsu} onClick={deleteReview.bind(this, review.id, review.shopId)}>×</p>
+                              }
+                              <p className={styles.moji}>{review.explanation}</p>
+                            </div>
+                          )
+                      })}
+                    </div>
+                    <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
+                      <input type="text" className={styles["input"]} ref={explanation} required />
+                      <button className={styles["post"]}>投稿</button>
+                    </form>
+                  </div>
+                </InfoWindowF>
+              </div>
+            )
+          }
+        })}
       </GoogleMap>
     </LoadScript>
   );
