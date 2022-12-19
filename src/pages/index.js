@@ -61,14 +61,15 @@ export default function Home() {
     // json形式でバックエンドにpassword,emailをpostする
     axios
       .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "login", {
-        Password: loginPassword.current.value,
-        Email: loginEmail.current.value
+        password: loginPassword.current.value,
+        email: loginEmail.current.value
       })
       .then((res) => {
         router.push({pathname: "/Map"});
         
-        // localStorageにuuidを保存
-        localStorage.setItem("uuid", res.data.Uuid)
+        // localStorageにemailとpasswordを保存
+        localStorage.setItem("identity", res.data.Email);
+        localStorage.setItem("session", res.data.Password);
       })
       .catch((err) => {
         alert(err.response.data);
