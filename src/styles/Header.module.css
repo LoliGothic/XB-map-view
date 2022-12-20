@@ -1,0 +1,55 @@
+.header {
+  /* headerの背景をチェック柄にする */
+  background-color: #c0c0c0;
+  background-image:
+  repeating-linear-gradient(-45deg,
+  #dcdcdc, #dcdcdc 10px,
+  transparent 0, transparent 20px),
+  repeating-linear-gradient(45deg,
+  #dcdcdc, #dcdcdc 10px,
+  transparent 0, transparent 20px);
+
+  /* 縦方向で中央に持ってくる */
+  /* 親要素にflexとcenterを指定 */
+  display: flex;
+  align-items: center;
+
+  height: 8%;
+}
+.img {
+  cursor: pointer;
+}
+.menu{
+  display: block;
+  width: 50px;/*枠の大きさ*/
+  height: 50px;/*枠の大きさ*/
+  background: #000000;
+  opacity: 0.7; /*透明度*/
+  border-radius: 20%;
+  position: relative;
+  cursor: pointer;
+
+  /* 右寄せにする */
+  margin-right: 0;
+  margin-left: auto;
+}
+.menu hr{
+  display: block;
+  margin: 0;
+  border: none;
+  width: 50%;/*バツ線の長さ*/
+  height: 4px;/*バツ線の太さ*/
+  background: #ffffff;
+  opacity: 0.9; /*透明度*/
+  transform-origin:0% 50%;
+  position: absolute;
+  top: 12px;
+  left: 25%;
+  transition: .3s;
+}
+.menu hr:nth-of-type(2){
+  top: 22px;
+}
+.menu hr:nth-of-type(3){
+  top: 32px;
+}
