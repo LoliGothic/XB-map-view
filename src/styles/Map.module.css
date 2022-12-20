@@ -1,3 +1,6 @@
+.window {
+  height: 100vh;
+}
 .info-window {
   position: relative;
   width: 300px;
