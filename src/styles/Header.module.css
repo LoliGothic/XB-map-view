@@ -53,3 +53,20 @@
 .menu hr:nth-of-type(3){
   top: 32px;
 }
+.drawer {
+  color: #c0c0c0;
+}
+.bullet-point {
+  list-style: none;
+  padding-left: 0;
+}
+.bullet-point li {
+  display: flex;
+	align-items: center;
+}
+.bullet-point li:hover {
+  background-color: #dcdcdc;
+}
+.icon {
+  margin-right: 10px;
+}
