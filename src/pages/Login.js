@@ -97,8 +97,8 @@ export default function Login() {
             </p>
           </form>
           <form method="post" onSubmit={postAccountData}>
-            <input type="password" placeholder="パスワード" ref={loginPassword} required />
             <input type="email" placeholder="メールアドレス" ref={loginEmail} required />
+            <input type="password" placeholder="パスワード" ref={loginPassword} required />
             <button>ログイン</button>
             <p className={styles.message}>
               初めての方は{" "}
