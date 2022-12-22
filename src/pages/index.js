@@ -220,9 +220,9 @@ export default function Home() {
                   <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
                   <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
                     <div className={styles["info-window"]}>
-                      <h1 className={styles["shop-name"]}>{shopInfo.name}</h1>
+                      <h1>{shopInfo.name}</h1>
                       <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
-                      <div className={styles.scr}>
+                      <div className={styles["review-list"]}>
                         {reviews && reviews.map((review, index) => {
                             return (
                               <div key={index} className={styles.review}>
@@ -231,14 +231,14 @@ export default function Home() {
                                 {review.email == loginUserData.Email && review.password == loginUserData.Password &&
                                   <p className={styles.batsu} onClick={deleteReview.bind(this, review.id, review.shopId)}>×</p>
                                 }
-                                <p className={styles.moji}>{review.explanation}</p>
+                                <p className={styles.explanation}>{review.explanation}</p>
                               </div>
                             )
                         })}
                       </div>
                       <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
-                        <input type="text" className={styles["input"]} ref={explanation} required />
-                        <button className={styles["post"]}>投稿</button>
+                        <input type="text" className={styles["input-explanation"]} ref={explanation} required />
+                        <button className={styles["post-explanation"]}>投稿</button>
                       </form>
                     </div>
                   </InfoWindowF>
