@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <img className={styles.img} src="/text_header-title.png" alt="title" />
+      <img src="/text_header-title.png" alt="title" />
       <span className={styles.menu} onClick={() => setDrawerOpened(true)}>
         <hr /><hr /><hr />
       </span>
