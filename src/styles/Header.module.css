@@ -63,10 +63,14 @@
 .bullet-point li {
   display: flex;
 	align-items: center;
+  padding: 0px 15px 0px 15px;
 }
 .bullet-point li:hover {
   background-color: #dcdcdc;
 }
 .icon {
   margin-right: 10px;
+}
+.logout {
+  color: #F30100;
 }
