@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/router';
-import Header from "../components/Header"
+import Header from "../components/Header";
 import styles from "../styles/Change.module.css";
 
 export default function ChangePassword() {
-  const [loginUserData, setLoginUserData] = useState([])
+  const [loginUserData, setLoginUserData] = useState([]);
   const currentPassword = useRef(null);
   const newPassword = useRef(null);
   const checkNewPassword = useRef(null);

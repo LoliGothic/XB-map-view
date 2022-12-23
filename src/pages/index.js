@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { GoogleMap, LoadScript, MarkerF, InfoWindowF} from "@react-google-maps/api";
 import axios from "axios";
-import Header from "../components/Header"
+import Header from "../components/Header";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [size, setSize] = useState(undefined);
-  const [loginUserData, setLoginUserData] = useState([])
+  const [loginUserData, setLoginUserData] = useState([]);
   const [allShopInfo, setAllShopInfo] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [center, setCenter] = useState({lat: 35.69575, lng: 139.77521});
-  const explanation = useRef(null)
+  const explanation = useRef(null);
   const router = useRouter();
 
   // googlemapの設定
@@ -26,6 +26,29 @@ export default function Home() {
     return setSize(new window.google.maps.Size(0, -45));
   };
 
+  useEffect(() => {
+    // ログインしているかチェック
+    checkLoginStatus();
+
+    // 初期座標をセットする
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
+    axios
+      .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + "shop")
+      .then((res) => {
+        const allShop = []
+        res.data.forEach((shopInfo) => {
+          allShop.push({id: shopInfo.Id, name: shopInfo.Name, adress: shopInfo.Adress, lat: shopInfo.Lat, lng: shopInfo.Lng, type01: shopInfo.Type01, type02: shopInfo.Type02, type03: shopInfo.Type03, visible: false});
+        })
+
+        // データベースから取ってきたお店の情報に表示/非表示を判別するvisibleを付け加えてallShopInfoに格納
+        setAllShopInfo(allShop);
+      })
+      .catch((err) => {
+        alert(err.response.data);
+      })
+  },[])
+
   function checkLoginStatus() {
     // passwordとemailをlocalStorageから取得する
     const password = localStorage.getItem("session");
@@ -39,51 +62,26 @@ export default function Home() {
           email: email
         })
         .then((res) => {
-          console.log(res.data);
           setLoginUserData(res.data);
         })
         // 一致しなければログイン画面に遷移
         .catch((err) => {
           router.push({pathname: "/Login"});
-          return;
         })
     }
     // どちらかがlocalStorageに存在しなければログイン画面に遷移
     else {
       router.push({pathname: "/Login"});
-          return;
     }
   }
 
   function successCallback(position) {
-    setCenter({lat: position.coords.latitude, lng: position.coords.longitude})
+    setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
   }
 
   function errorCallback(error) {
-    setCenter({lat: 35.69575, lng: 139.77521})
+    setCenter({lat: 35.69575, lng: 139.77521});
   }
-
-  useEffect(() => {
-    // ログインしているかチェック
-    checkLoginStatus();
-
-    // 初期座標をセットする
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback)
-
-    axios
-      .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + "shop")
-      .then((res) => {
-        const allShop = []
-        res.data.forEach((shopInfo) => {
-          allShop.push({id: shopInfo.Id, name: shopInfo.Name, adress: shopInfo.Adress, lat: shopInfo.Lat, lng: shopInfo.Lng, type01: shopInfo.Type01, type02: shopInfo.Type02, type03: shopInfo.Type03, visible: false});
-        })
-        // データベースから取ってきたお店の情報に表示/非表示を判別するvisibleを付け加えてallShopInfoに格納
-        setAllShopInfo(allShop)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  },[])
 
   function showInfoWindow(shopId) {
     const allShop = [];
@@ -91,7 +89,7 @@ export default function Home() {
       // クリックしたマーカーのvisibleをtrueにして，表示する
       if (shopInfo.id === shopId) {
         allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: true});
-        setCenter({lat: shopInfo.lat, lng: shopInfo.lng})
+        setCenter({lat: shopInfo.lat, lng: shopInfo.lng});
       }
       // クリックしたマーカー以外のvisibleをfalseにして，非表示にする
       else {
@@ -99,7 +97,7 @@ export default function Home() {
       }
     })
 
-    setAllShopInfo(allShop)
+    setAllShopInfo(allShop);
 
     axios
       .get(process.env.NEXT_PUBLIC_BACKEND_API_URL + `review/${shopId}`)
@@ -109,11 +107,7 @@ export default function Home() {
         res.data.forEach((review) => {
           tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
         })
-        console.log(tmpReviews);
         setReviews(tmpReviews);
-      })
-      .catch((err) => {
-        console.log(err);
       })
   }
 
@@ -122,7 +116,7 @@ export default function Home() {
     allShopInfo.forEach((shopInfo) => {
       if (shopInfo.id === shopId) {
         allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
-        setCenter({lat: shopInfo.lat, lng: shopInfo.lng})
+        setCenter({lat: shopInfo.lat, lng: shopInfo.lng});
       }
       else {
         allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
@@ -139,7 +133,7 @@ export default function Home() {
       allShop.push({id: shopInfo.id, name: shopInfo.name, adress: shopInfo.adress, lat: shopInfo.lat, lng: shopInfo.lng, type01: shopInfo.type01, type02: shopInfo.type02, type03: shopInfo.type03, visible: false});
     })
 
-    setAllShopInfo(allShop)
+    setAllShopInfo(allShop);
   }
 
   function postReview(shopId, e) {
@@ -164,12 +158,10 @@ export default function Home() {
             tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
           })
           setReviews(tmpReviews);
+          explanation.current.value = "";
         })
         .catch((err) => {
           alert(err.response.data);
-        })
-        .finally(() => {
-          explanation.current.value = "";
         })
       }
     
@@ -194,9 +186,6 @@ export default function Home() {
             tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
           })
           setReviews(tmpReviews);
-        })
-        .catch((err) => {
-          console.log(err);
         })
     }
   }

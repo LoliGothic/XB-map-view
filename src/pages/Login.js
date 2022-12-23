@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import $ from "jquery";
 import axios from "axios";
@@ -46,15 +46,13 @@ export default function Login() {
       })
       .then((res) => {
         alert("正常に登録されました");
-      })
-      .catch((err) => {
-        alert(err.response.data);
-      })
-      .finally(() => {
         name.current.value = "";
         signupPassword.current.value = "";
         checkSignupPassword.current.value = "";
         signupEmail.current.value = "";
+      })
+      .catch((err) => {
+        alert(err.response.data);
       })
   }
 
@@ -78,10 +76,6 @@ export default function Login() {
       .catch((err) => {
         alert(err.response.data);
       })
-      .finally(() => {
-        loginPassword.current.value = "";
-        loginEmail.current.value = "";
-       })
   } 
   
   return (
