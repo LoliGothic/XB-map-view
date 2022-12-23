@@ -166,7 +166,7 @@ export default function Home() {
           setReviews(tmpReviews);
         })
         .catch((err) => {
-          console.log(err);
+          alert(err.response.data);
         })
         .finally(() => {
           explanation.current.value = "";
@@ -237,7 +237,7 @@ export default function Home() {
                         })}
                       </div>
                       <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
-                        <input type="text" className={styles["input-explanation"]} ref={explanation} required />
+                        <input type="text" className={styles["input-explanation"]} placeholder="100文字以内で入力してください" ref={explanation} maxLength="100" required />
                         <button className={styles["post-explanation"]}>投稿</button>
                       </form>
                     </div>
