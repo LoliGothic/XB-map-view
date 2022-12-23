@@ -29,7 +29,6 @@ export default function ChangePassword() {
           email: email
         })
         .then((res) => {
-          console.log(res.data);
           setLoginUserData(res.data);
         })
         // 一致しなければログイン画面に遷移
@@ -59,7 +58,7 @@ export default function ChangePassword() {
       })
       .then((res) => {
         alert("パスワードが変更されました");
-        console.log(res.data);
+
         // localStorageにemailとpasswordを保存
         localStorage.setItem("identity", res.data.Email);
         localStorage.setItem("session", res.data.Password);
@@ -77,18 +76,18 @@ export default function ChangePassword() {
   return (
     <div className={styles.window}>
       <Header />
-    <div className={styles.body}>
-      <div className={styles["change-page"]}>
-        <div className={styles.form}>
-          <form method="post" className={styles["register-form"]} onSubmit={postNewPassword}>
-            <input type="password" placeholder="現在のパスワード" ref={currentPassword} minLength="6" required />
-            <input type="password" placeholder="新しいパスワードパスワード" ref={newPassword} minLength="6" required />
-            <input type="password" placeholder="新しいパスワード(確認)" ref={checkNewPassword} minLength="6" required />
-            <button>変更</button>
-          </form>
+      <div className={styles.body}>
+        <div className={styles["change-page"]}>
+          <div className={styles.form}>
+            <form method="post" className={styles["register-form"]} onSubmit={postNewPassword}>
+              <input type="password" placeholder="現在のパスワード" ref={currentPassword} minLength="6" required />
+              <input type="password" placeholder="新しいパスワードパスワード" ref={newPassword} minLength="6" required />
+              <input type="password" placeholder="新しいパスワード(確認)" ref={checkNewPassword} minLength="6" required />
+              <button>変更</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }

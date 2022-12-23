@@ -55,7 +55,6 @@ export default function ChangePassword() {
       })
       .then((res) => {
         alert("ユーザー名が変更されました");
-        console.log(res.data);
       })
       .catch((err) => {
         alert(err.response.data);
@@ -65,16 +64,16 @@ export default function ChangePassword() {
   return (
     <div className={styles.window}>
       <Header />
-    <div className={styles.body}>
-      <div className={styles["change-page"]}>
-        <div className={styles.form}>
-          <form method="post" className={styles["register-form"]} onSubmit={postNewName}>
-            <input type="text" placeholder="新しいユーザ名" ref={newName} maxLength="20" required />
-            <button>変更</button>
-          </form>
+      <div className={styles.body}>
+        <div className={styles["change-page"]}>
+          <div className={styles.form}>
+            <form method="post" className={styles["register-form"]} onSubmit={postNewName}>
+              <input type="text" placeholder="新しいユーザ名" ref={newName} maxLength="20" required />
+              <button>変更</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
