@@ -1,4 +1,4 @@
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from 'next/router'
 import Link from "next/link";
 import $ from "jquery";
@@ -9,6 +9,7 @@ export default function Login() {
   const router = useRouter();
   const name = useRef(null);
   const signupPassword = useRef(null);
+  const checkSignupPassword = useRef(null);
   const signupEmail = useRef(null);
   const loginPassword = useRef(null);
   const loginEmail = useRef(null);
@@ -25,6 +26,7 @@ export default function Login() {
     // inputを全部クリア
     name.current.value = "";
     signupPassword.current.value = "";
+    checkSignupPassword.current.value = "";
     signupEmail.current.value = "";
     loginPassword.current.value = "";
     loginEmail.current.value = "";
@@ -39,6 +41,7 @@ export default function Login() {
       .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "signup", {
         name: name.current.value,
         password: signupPassword.current.value,
+        checkPassword: checkSignupPassword.current.value,
         email: signupEmail.current.value
       })
       .then((res) => {
@@ -50,6 +53,7 @@ export default function Login() {
       .finally(() => {
         name.current.value = "";
         signupPassword.current.value = "";
+        checkSignupPassword.current.value = "";
         signupEmail.current.value = "";
       })
   }
@@ -85,9 +89,10 @@ export default function Login() {
       <div className={styles["login-page"]}>
         <div className={styles.form}>
           <form method="post" className={styles["register-form"]} onSubmit={postNewaccountData}>
-            <input type="text" placeholder="ユーザー名" ref={name} required />
-            <input type="password" placeholder="パスワード" ref={signupPassword} minLength="6" required />
+            <input type="text" placeholder="ユーザー名" ref={name} maxLength="20" required />
             <input type="email" placeholder="メールアドレス" ref={signupEmail} required />
+            <input type="password" placeholder="パスワード" ref={signupPassword} minLength="6" required />
+            <input type="password" placeholder="パスワード(確認)" ref={checkSignupPassword} minLength="6" required />
             <button>アカウント作成</button>
             <p className={styles.message}>
               すでにアカウントをお持ちの方は{" "}
@@ -98,7 +103,7 @@ export default function Login() {
           </form>
           <form method="post" onSubmit={postAccountData}>
             <input type="email" placeholder="メールアドレス" ref={loginEmail} required />
-            <input type="password" placeholder="パスワード" ref={loginPassword} required />
+            <input type="password" placeholder="パスワード" ref={loginPassword} minLength="6" required />
             <button>ログイン</button>
             <p className={styles.message}>
               初めての方は{" "}
