@@ -40,15 +40,15 @@ export default function Header() {
         <ul className={styles["bullet-point"]}>
           <li onClick={transitionHome}>
             <HomeIcon className={styles.icon} />
-            <p>TOPページ</p>
+            <p className={styles.element}>TOPページ</p>
           </li>
           <li onClick={transitionChangeName}>
             <AccountCircleIcon className={styles.icon} />
-            <p>ユーザー名変更</p>
+            <p className={styles.element}>ユーザー名変更</p>
           </li>
           <li onClick={transitionChangePassword}>
             <LockIcon className={styles.icon} />
-            <p>パスワード変更</p>
+            <p className={styles.element}>パスワード変更</p>
           </li>
           <li onClick={logout}>
             <LogoutIcon className={styles.icon} />
