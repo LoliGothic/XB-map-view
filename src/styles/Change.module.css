@@ -34,6 +34,7 @@
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
+  color: #333333;
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -41,7 +42,7 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #25b7c0;
+  background: #00aeef;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -51,5 +52,5 @@
   transition: all 0.3 ease;
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: #009b9f;
+  background: #219ddd;
 }

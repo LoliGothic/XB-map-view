@@ -69,7 +69,11 @@
   background-color: #dcdcdc;
 }
 .icon {
+  color: #333333;
   margin-right: 10px;
+}
+.element {
+  color: #333333;
 }
 .logout {
   color: #F30100;

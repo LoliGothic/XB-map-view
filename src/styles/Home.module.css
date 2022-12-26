@@ -83,7 +83,8 @@
   height: 25px;
 }
 .post-explanation {
-  background-color: #25b7c0;
+  background-color: #00aeef;
+  color: #FFFFFF;
   position: absolute;
   right: 0px;
   bottom: 0;
