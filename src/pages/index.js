@@ -242,7 +242,10 @@ export default function Home() {
                             return (
                               <div key={index} className={styles.review}>
                                 <p className={styles["user-name"]}>{review.name}</p>
-                                <p className={styles["review-time"]}>{review.createdAt}</p>
+                                {review.email == loginUserData.Email && review.password == loginUserData.Password
+                                  ? <p className={styles["review-time"]}>{review.createdAt}</p>
+                                  : <p className={styles["review-time-other"]}>{review.createdAt}</p>
+                                }
                                 {review.email == loginUserData.Email && review.password == loginUserData.Password &&
                                   <p className={styles.batsu} onClick={deleteReview.bind(this, review.id, review.shopId)}>×</p>
                                 }
