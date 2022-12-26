@@ -56,7 +56,12 @@ export default function ChangePassword() {
         alert("ユーザー名が変更されました");
       })
       .catch((err) => {
-        alert(err.response.data);
+        if (err.response.data != null) {
+          alert(err.response.data);
+        }
+        else {
+          alert("エラーが発生しました")
+        }
       })
   }
 

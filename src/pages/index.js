@@ -45,7 +45,12 @@ export default function Home() {
         setAllShopInfo(allShop);
       })
       .catch((err) => {
-        alert(err.response.data);
+        if (err.response.data != null) {
+          alert(err.response.data);
+        }
+        else {
+          alert("エラーが発生しました")
+        }
       })
   },[])
 
@@ -109,6 +114,14 @@ export default function Home() {
         })
         setReviews(tmpReviews);
       })
+      .catch((err) => {
+        if (err.response.data != null) {
+          alert(err.response.data);
+        }
+        else {
+          alert("エラーが発生しました")
+        }
+      })
   }
 
   function closeInfoWindow(shopId) {
@@ -161,7 +174,12 @@ export default function Home() {
           explanation.current.value = "";
         })
         .catch((err) => {
-          alert(err.response.data);
+          if (err.response.data != null) {
+            alert(err.response.data);
+          }
+          else {
+            alert("エラーが発生しました")
+          }
         })
       }
     
@@ -186,6 +204,14 @@ export default function Home() {
             tmpReviews.push({id: review.Id, shopId: review.ShopId, createdAt: review.CreatedAt.substring(0,10), explanation: review.Explanation, name: review.Name, password: review.Password, email: review.Email});
           })
           setReviews(tmpReviews);
+        })
+        .catch((err) => {
+          if (err.response.data != null) {
+            alert(err.response.data);
+          }
+          else {
+            alert("エラーが発生しました")
+          }
         })
     }
   }

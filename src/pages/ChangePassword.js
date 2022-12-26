@@ -64,7 +64,12 @@ export default function ChangePassword() {
         localStorage.setItem("session", res.data.Password);
       })
       .catch((err) => {
-        alert(err.response.data);
+        if (err.response.data != null) {
+          alert(err.response.data);
+        }
+        else {
+          alert("エラーが発生しました")
+        }
       })
       .finally(() => {
         currentPassword.current.value = "";
