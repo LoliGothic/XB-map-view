@@ -6,9 +6,10 @@
   width: 300px;
   height: 300px;
 }
-.info-window h1 {
+.shop-name {
   color: #111111;
   font-size: 14px;
+  font-weight: bold;
   margin: 0 0 0 0;
 }
 .shop-adress {

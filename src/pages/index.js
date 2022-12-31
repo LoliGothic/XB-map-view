@@ -235,7 +235,7 @@ export default function Home() {
                   <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
                   <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
                     <div className={styles["info-window"]}>
-                      <h1>{shopInfo.name}</h1>
+                      <p className={styles["shop-name"]}>{shopInfo.name}</p>
                       <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
                       <div className={styles["review-list"]}>
                         {reviews && reviews.map((review, index) => {
