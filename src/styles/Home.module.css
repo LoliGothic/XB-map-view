@@ -1,100 +1,206 @@
 .window {
   height: 100vh;
 }
-.info-window {
-  position: relative;
-  width: 300px;
-  height: 300px;
+
+/* スマホ用 */
+@media screen and (max-width: 480px) {
+  .info-window {
+    position: relative;
+    width: 220px;
+    height: 300px;
+  }
+  .shop-name {
+    color: #111111;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 0 0;
+  }
+  .shop-adress {
+    color: #333333;
+    font-size: 12px;
+    margin: 5px 0 10px 0;
+  }
+  .review-list {
+    position: absolute;
+    top: 80px;
+    bottom: 30px;
+    height: auto; /*215pxでいい感じに*/
+    overflow: auto;
+  }
+  .review {
+    position: relative;
+    height: auto;
+    width: 220px;
+    border-right: solid 1px #333333;
+    border-bottom: solid 1px #333333;
+    border-left: solid 1px #333333;
+    overflow-wrap: break-word;
+  }
+  .user-name {
+    position: absolute; 
+    top: -30px;
+    font-weight: bold;
+    color: #333333;
+    width: 60%;
+    overflow: hidden; /* オーバーした要素を非表示にする*/
+    white-space: nowrap; /* 改行を半角スペースに変換することで、1行にする */
+    text-overflow: ellipsis; /* オーバーしたテキストを３点リーダーにする */
+  }
+  .review-time {
+    position: absolute;
+    top: -28px;
+    right: 1.5em;
+    color: #333333;
+  }
+  .review-time-other {
+    position: absolute;
+    top: -28px;
+    right: 0px;
+    color: #333333;
+  }
+  .batsu {
+    position: absolute;
+    top: -30px;
+    right: 0px;
+    font-size: 100%;/*ボタンの大きさ*/
+    font-weight: bold;
+    border: 1px solid #333333;
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 1.3em;
+    line-height: 1.3em;
+    cursor: pointer;
+    transition: .2s;
+  }
+  .batsu:hover{
+    background: #333333;
+    border-color: #333333;
+    color: #FFFFFF;
+  }
+  .explanation {
+    color: #333333;
+    margin: 20px 0 0 0;
+  }
+  .input-explanation {
+    background-color: #f2f2f2;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5px;
+    width: 81%;
+    height: 25px;
+  }
+  .post-explanation {
+    background-color: #00aeef;
+    color: #FFFFFF;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+    border-radius: 5px;
+    width: 20%;
+    height: 25px;
+  }
 }
-.shop-name {
-  color: #111111;
-  font-size: 14px;
-  font-weight: bold;
-  margin: 0 0 0 0;
-}
-.shop-adress {
-  color: #333333;
-  font-size: 12px;
-  margin: 5px 0 10px 0;
-}
-.review-list {
-  position: absolute;
-  top: 60px;
-  bottom: 30px;
-  height: auto; /*215pxでいい感じに*/
-  overflow: auto;
-}
-.review {
-  position: relative;
-  height: auto;
-  width: 300px;
-  border-right: solid 1px #333333;
-  border-bottom: solid 1px #333333;
-  border-left: solid 1px #333333;
-  overflow-wrap: break-word;
-}
-.user-name {
-  position: absolute; 
-  top: -30px;
-  font-weight: bold;
-  color: #333333;
-  width: 200px;
-  overflow: hidden; /* オーバーした要素を非表示にする*/
-  white-space: nowrap; /* 改行を半角スペースに変換することで、1行にする */
-  text-overflow: ellipsis; /* オーバーしたテキストを３点リーダーにする */
-}
-.review-time {
-  position: absolute;
-  top: -28px;
-  right: 1.5em;
-  color: #333333;
-}
-.review-time-other {
-  position: absolute;
-  top: -28px;
-  right: 0px;
-  color: #333333;
-}
-.batsu {
-  position: absolute;
-  top: -30px;
-  right: 0px;
-  font-size: 100%;/*ボタンの大きさ*/
-  font-weight: bold;
-  border: 1px solid #333333;
-  color: #333333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  width: 1.3em;
-  line-height: 1.3em;
-  cursor: pointer;
-  transition: .2s;
-}
-.batsu:hover{
-  background: #333333;
-  border-color: #333333;
-  color: #FFFFFF;
-}
-.explanation {
-  color: #333333;
-  margin: 20px 0 0 0;
-}
-.input-explanation {
-  background-color: #f2f2f2;
-  width: 87%;
-  position: absolute;
-  bottom: 0;
-  border-radius: 5px;
-  height: 25px;
-}
-.post-explanation {
-  background-color: #00aeef;
-  color: #FFFFFF;
-  position: absolute;
-  right: 0px;
-  bottom: 0;
-  border-radius: 5px;
-  height: 25px;
+
+@media screen and (min-width: 481px) {
+  .info-window {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+  .shop-name {
+    color: #111111;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 0 0 0;
+  }
+  .shop-adress {
+    color: #333333;
+    font-size: 12px;
+    margin: 5px 0 10px 0;
+  }
+  .review-list {
+    position: absolute;
+    top: 60px;
+    bottom: 30px;
+    height: auto; /*215pxでいい感じに*/
+    overflow: auto;
+  }
+  .review {
+    position: relative;
+    height: auto;
+    width: 300px;
+    border-right: solid 1px #333333;
+    border-bottom: solid 1px #333333;
+    border-left: solid 1px #333333;
+    overflow-wrap: break-word;
+  }
+  .user-name {
+    position: absolute; 
+    top: -30px;
+    font-weight: bold;
+    color: #333333;
+    width: 200px;
+    overflow: hidden; /* オーバーした要素を非表示にする*/
+    white-space: nowrap; /* 改行を半角スペースに変換することで、1行にする */
+    text-overflow: ellipsis; /* オーバーしたテキストを３点リーダーにする */
+  }
+  .review-time {
+    position: absolute;
+    top: -28px;
+    right: 1.5em;
+    color: #333333;
+  }
+  .review-time-other {
+    position: absolute;
+    top: -28px;
+    right: 0px;
+    color: #333333;
+  }
+  .batsu {
+    position: absolute;
+    top: -30px;
+    right: 0px;
+    font-size: 100%;/*ボタンの大きさ*/
+    font-weight: bold;
+    border: 1px solid #333333;
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 1.3em;
+    line-height: 1.3em;
+    cursor: pointer;
+    transition: .2s;
+  }
+  .batsu:hover{
+    background: #333333;
+    border-color: #333333;
+    color: #FFFFFF;
+  }
+  .explanation {
+    color: #333333;
+    margin: 20px 0 0 0;
+  }
+  .input-explanation {
+    background-color: #f2f2f2;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5px;
+    width: 86%;
+    height: 25px;
+  }
+  .post-explanation {
+    background-color: #00aeef;
+    color: #FFFFFF;
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+    border-radius: 5px;
+    width: 15%;
+    height: 25px;
+  }
 }
