@@ -104,6 +104,7 @@
   }
 }
 
+/* パソコン・タブレット用 */
 @media screen and (min-width: 481px) {
   .info-window {
     position: relative;
