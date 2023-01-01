@@ -6,7 +6,7 @@
 @media screen and (max-width: 480px) {
   .info-window {
     position: relative;
-    width: 220px;
+    width: 200px;
     height: 300px;
   }
   .shop-name {
@@ -30,7 +30,7 @@
   .review {
     position: relative;
     height: auto;
-    width: 220px;
+    width: 200px;
     border-right: solid 1px #333333;
     border-bottom: solid 1px #333333;
     border-left: solid 1px #333333;
@@ -41,7 +41,7 @@
     top: -30px;
     font-weight: bold;
     color: #333333;
-    width: 60%;
+    width: 110px;
     overflow: hidden; /* オーバーした要素を非表示にする*/
     white-space: nowrap; /* 改行を半角スペースに変換することで、1行にする */
     text-overflow: ellipsis; /* オーバーしたテキストを３点リーダーにする */
@@ -89,7 +89,7 @@
     position: absolute;
     bottom: 0;
     border-radius: 5px;
-    width: 81%;
+    width: 156px;
     height: 25px;
   }
   .post-explanation {
@@ -99,7 +99,7 @@
     right: 0px;
     bottom: 0;
     border-radius: 5px;
-    width: 20%;
+    width: 45px;
     height: 25px;
   }
 }
@@ -190,7 +190,7 @@
     position: absolute;
     bottom: 0;
     border-radius: 5px;
-    width: 86%;
+    width: 251px;
     height: 25px;
   }
   .post-explanation {
@@ -200,7 +200,7 @@
     right: 0px;
     bottom: 0;
     border-radius: 5px;
-    width: 15%;
+    width: 50px;
     height: 25px;
   }
 }
