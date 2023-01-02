@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { GoogleMap, LoadScript, MarkerF, InfoWindowF} from "@react-google-maps/api";
 import axios from "axios";
 import Header from "../components/Header";
+import Seo from "../components/Seo"
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -217,55 +218,58 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.window}>  
-      <Header />
-      <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15} onClick={resetVisible}> 
-          {allShopInfo && allShopInfo.map((shopInfo, index) => {
-            if (shopInfo.visible == false) {
-              return (
-                <div key={index}>
-                  <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={showInfoWindow.bind(this, shopInfo.id)} />
-                </div>
-              )
-            }
-            else {
-              return (
-                <div key={index}>
-                  <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
-                  <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
-                    <div className={styles["info-window"]}>
-                      <p className={styles["shop-name"]}>{shopInfo.name}</p>
-                      <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
-                      <div className={styles["review-list"]}>
-                        {reviews && reviews.map((review, index) => {
-                            return (
-                              <div key={index} className={styles.review}>
-                                <p className={styles["user-name"]}>{review.name}</p>
-                                {review.email == loginUserData.Email && review.password == loginUserData.Password
-                                  ? <p className={styles["review-time"]}>{review.createdAt}</p>
-                                  : <p className={styles["review-time-other"]}>{review.createdAt}</p>
-                                }
-                                {review.email == loginUserData.Email && review.password == loginUserData.Password &&
-                                  <p className={styles.batsu} onClick={deleteReview.bind(this, review.id, review.shopId)}>×</p>
-                                }
-                                <p className={styles.explanation}>{review.explanation}</p>
-                              </div>
-                            )
-                        })}
+    <div>
+      <Seo />
+      <div className={styles.window}>  
+        <Header />
+        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
+          <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15} onClick={resetVisible}> 
+            {allShopInfo && allShopInfo.map((shopInfo, index) => {
+              if (shopInfo.visible == false) {
+                return (
+                  <div key={index}>
+                    <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={showInfoWindow.bind(this, shopInfo.id)} />
+                  </div>
+                )
+              }
+              else {
+                return (
+                  <div key={index}>
+                    <MarkerF position={{lat: shopInfo.lat, lng: shopInfo.lng}} onClick={closeInfoWindow.bind(this, shopInfo.id)} />
+                    <InfoWindowF position={{lat: shopInfo.lat, lng: shopInfo.lng}} options={infoWindowOptions} onCloseClick={closeInfoWindow.bind(this, shopInfo.id)}>
+                      <div className={styles["info-window"]}>
+                        <p className={styles["shop-name"]}>{shopInfo.name}</p>
+                        <p className={styles["shop-adress"]}>{shopInfo.adress}</p>
+                        <div className={styles["review-list"]}>
+                          {reviews && reviews.map((review, index) => {
+                              return (
+                                <div key={index} className={styles.review}>
+                                  <p className={styles["user-name"]}>{review.name}</p>
+                                  {review.email == loginUserData.Email && review.password == loginUserData.Password
+                                    ? <p className={styles["review-time"]}>{review.createdAt}</p>
+                                    : <p className={styles["review-time-other"]}>{review.createdAt}</p>
+                                  }
+                                  {review.email == loginUserData.Email && review.password == loginUserData.Password &&
+                                    <p className={styles.batsu} onClick={deleteReview.bind(this, review.id, review.shopId)}>×</p>
+                                  }
+                                  <p className={styles.explanation}>{review.explanation}</p>
+                                </div>
+                              )
+                          })}
+                        </div>
+                        <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
+                          <input type="text" className={styles["input-explanation"]} placeholder="100文字以内で入力してください" ref={explanation} maxLength="100" required />
+                          <button className={styles["post-explanation"]}>投稿</button>
+                        </form>
                       </div>
-                      <form method="post" onSubmit={(e) => postReview(shopInfo.id, e)}>
-                        <input type="text" className={styles["input-explanation"]} placeholder="100文字以内で入力してください" ref={explanation} maxLength="100" required />
-                        <button className={styles["post-explanation"]}>投稿</button>
-                      </form>
-                    </div>
-                  </InfoWindowF>
-                </div>
-              )
-            }
-          })}
-        </GoogleMap>
-      </LoadScript>
+                    </InfoWindowF>
+                  </div>
+                )
+              }
+            })}
+          </GoogleMap>
+        </LoadScript>
+      </div>
     </div>
   );
 }
