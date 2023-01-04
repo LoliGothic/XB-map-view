@@ -38,7 +38,7 @@ export default function Login() {
 
     // json形式でバックエンドにname,password,emailをpostする
     axios
-      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "signup", {
+      .post("wonderful-bush-95531177f4174348a6d10d8dee5fea27.azurewebsites.net/" + "signup", {
         name: name.current.value,
         password: signupPassword.current.value,
         checkPassword: checkSignupPassword.current.value,
@@ -67,7 +67,7 @@ export default function Login() {
 
     // json形式でバックエンドにpassword,emailをpostする
     axios
-      .post("wonderful-bush-95531177f4174348a6d10d8dee5fea27.azurewebsites.net/" + "login", {
+      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "login", {
         password: loginPassword.current.value,
         email: loginEmail.current.value
       })
