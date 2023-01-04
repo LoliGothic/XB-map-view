@@ -17,7 +17,6 @@ export default function Login() {
   // ログイン画面に遷移した時はlocalStorageをすべて削除する
   useEffect(() => {
     localStorage.clear();
-    console.log(process.env.NEXT_PUBLIC_BACKEND_API_URL);
   },[])
 
   function switching() {
@@ -39,7 +38,7 @@ export default function Login() {
 
     // json形式でバックエンドにname,password,emailをpostする
     axios
-      .post("xb-map-back.azurewebsites.net/" + "signup", {
+      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "signup", {
         name: name.current.value,
         password: signupPassword.current.value,
         checkPassword: checkSignupPassword.current.value,
