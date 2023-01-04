@@ -39,7 +39,7 @@ export default function Login() {
 
     // json形式でバックエンドにname,password,emailをpostする
     axios
-      .post(process.env.NEXT_PUBLIC_BACKEND_API_URL + "signup", {
+      .post("https://xb-map-back.azurewebsites.net" + "signup", {
         name: name.current.value,
         password: signupPassword.current.value,
         checkPassword: checkSignupPassword.current.value,
