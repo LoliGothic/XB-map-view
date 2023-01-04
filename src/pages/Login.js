@@ -95,8 +95,8 @@ export default function Login() {
           <form method="post" className={styles["register-form"]} onSubmit={postNewaccountData}>
             <input type="text" placeholder="ユーザー名" ref={name} maxLength="20" required />
             <input type="email" placeholder="メールアドレス" ref={signupEmail} required />
-            <input type="password" placeholder="パスワード" ref={signupPassword} minLength="6" required />
-            <input type="password" placeholder="パスワード(確認)" ref={checkSignupPassword} minLength="6" required />
+            <input type="password" placeholder="パスワード" ref={signupPassword} minLength="6" required autoComplete="off" />
+            <input type="password" placeholder="パスワード(確認)" ref={checkSignupPassword} minLength="6" required autoComplete="off" />
             <button>アカウント作成</button>
             <p className={styles.message}>
               すでにアカウントをお持ちの方は{" "}
@@ -107,7 +107,7 @@ export default function Login() {
           </form>
           <form method="post" onSubmit={postAccountData}>
             <input type="email" placeholder="メールアドレス" ref={loginEmail} required />
-            <input type="password" placeholder="パスワード" ref={loginPassword} minLength="6" required />
+            <input type="password" placeholder="パスワード" ref={loginPassword} minLength="6" required autoComplete="off" />
             <button>ログイン</button>
             <p className={styles.message}>
               初めての方は{" "}
