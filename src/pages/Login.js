@@ -17,7 +17,6 @@ export default function Login() {
   // ログイン画面に遷移した時はlocalStorageをすべて削除する
   useEffect(() => {
     localStorage.clear();
-    console.log(process.env.NEXT_PUBLIC_BACKEND_API_URL);
   },[])
 
   function switching() {
