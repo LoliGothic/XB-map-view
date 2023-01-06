@@ -223,7 +223,7 @@ export default function Home() {
       <Seo />
       <div className={styles.window}>  
         <Header />
-        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API} onLoad={() => createOffsetSize()}>
+        <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
           <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15} onClick={resetVisible}> 
             {allShopInfo && allShopInfo.map((shopInfo, index) => {
               if (shopInfo.visible == false) {
