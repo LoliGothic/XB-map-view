@@ -85,9 +85,9 @@ export default function ChangePassword() {
         <div className={styles["change-page"]}>
           <div className={styles.form}>
             <form method="post" className={styles["register-form"]} onSubmit={postNewPassword}>
-              <input type="password" placeholder="現在のパスワード" ref={currentPassword} minLength="6" required />
-              <input type="password" placeholder="新しいパスワードパスワード" ref={newPassword} minLength="6" required />
-              <input type="password" placeholder="新しいパスワード(確認)" ref={checkNewPassword} minLength="6" required />
+              <input type="password" placeholder="現在のパスワード" ref={currentPassword} minLength="6" required autoComplete="off" />
+              <input type="password" placeholder="新しいパスワードパスワード" ref={newPassword} minLength="6" required autoComplete="off" />
+              <input type="password" placeholder="新しいパスワード(確認)" ref={checkNewPassword} minLength="6" required autoComplete="off" />
               <button>変更</button>
             </form>
           </div>
