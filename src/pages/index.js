@@ -28,7 +28,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY);
     // ログインしているかチェック
     checkLoginStatus();
 
