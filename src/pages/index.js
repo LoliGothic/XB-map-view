@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { GoogleMap, LoadScript, MarkerF, InfoWindowF} from "@react-google-maps/api";
 import axios from "axios";
 import Header from "../components/Header";
-import Seo from "../components/Seo"
+import Div100vh from 'react-div-100vh';
+import Seo from "../components/Seo";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -220,7 +221,7 @@ export default function Home() {
   return (
     <div>
       <Seo />
-      <div className={styles.window}>  
+      <Div100vh>
         <Header />
         <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY} onLoad={() => createOffsetSize()}>
           <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15} onClick={resetVisible}> 
@@ -269,7 +270,7 @@ export default function Home() {
             })}
           </GoogleMap>
         </LoadScript>
-      </div>
+      </Div100vh>
     </div>
   );
 }

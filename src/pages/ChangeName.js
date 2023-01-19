@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/router';
 import Header from "../components/Header";
+import Div100vh from 'react-div-100vh';
 import styles from "../styles/Change.module.css";
 
 export default function ChangePassword() {
@@ -66,7 +67,7 @@ export default function ChangePassword() {
   }
 
   return (
-    <div className={styles.window}>
+    <Div100vh>
       <Header />
       <div className={styles.body}>
         <div className={styles["change-page"]}>
@@ -78,6 +79,6 @@ export default function ChangePassword() {
           </div>
         </div>
       </div>
-    </div>
+    </Div100vh>
   )
 }
