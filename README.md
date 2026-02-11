@@ -1,34 +1,102 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# XB-map-view
 
-## Getting Started
+XB-map のフロントエンドリポジトリです。
 
-First, run the development server:
+クロスブレイドが遊べる店舗を地図上に表示し、  
+ユーザーが店舗ごとの口コミを投稿・閲覧できる UI を提供します。
+
+---
+
+## 本サービスについて
+
+クロスブレイド公式サービス終了に伴い、本アプリもサービスを終了しました。
+
+現在はポートフォリオ用途としてコードを公開しています。
+
+---
+
+## リポジトリ構成
+
+本プロジェクトはフロントエンドとバックエンドを分離した構成で開発しています。
+
+- 🖥 Frontend（本リポジトリ）
+- ⚙ Backend  
+  https://github.com/LoliGothic/XB-map
+
+---
+
+## 主な機能
+
+- ログイン / 新規登録
+- マップ表示（Google Maps）
+- 店舗ピン表示
+- 口コミ投稿 / 削除
+- ユーザー名変更
+- パスワード変更
+
+---
+
+## 使用技術
+
+- Next.js
+- React
+- JavaScript
+- CSS Modules
+- Google Maps JavaScript API
+- Docker / docker-compose
+- GitHub Actions（CI/CD）
+
+---
+
+## ローカル起動方法
+
+Docker を使用して起動します。
 
 ```bash
-npm run dev
-# or
-yarn dev
+docker-compose up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ブラウザで以下にアクセスしてください
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+---
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## docker-compose構成
 
-## Learn More
+ローカル開発環境では `docker-compose` を使用して以下の構成で起動します。
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js コンテナ
+- 環境変数によるバックエンド API 接続先の切り替え
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+これにより、環境差異をなくし再現性のある開発環境を実現しています。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## デプロイ
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+GitHub Actions により、`push` 時に Azure Static Web Apps へ自動デプロイしていました。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+CI/CD を導入することで、ビルドおよびデプロイの自動化を実現しています。
+
+---
+
+## 設計方針
+
+- フロントエンドとバックエンドを分離し責務を明確化
+- Docker による環境統一
+- CI/CD によるデプロイ自動化
+- 外部 API（Google Maps）との適切な分離
+
+本リポジトリは表示・ユーザー操作を担う UI 層として設計されています。
+
+---
+
+## 補足
+
+本リポジトリはバックエンド API との通信を前提とした構成になっています。
+
+API の仕様やデータ構造については、バックエンドリポジトリをご参照ください。
+
+🔗 Backend Repository  
+https://github.com/LoliGothic/XB-map
